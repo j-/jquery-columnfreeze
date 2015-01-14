@@ -1,3 +1,8 @@
+/*!
+ * jQuery column freeze plugin
+ * @author Jamie Hoeks <j@skeoh.com>
+ * @license MIT
+ */
 (function ($) {
 
 'use strict';
