@@ -1,0 +1,32 @@
+{
+  "name": "jquery-columnfreeze",
+  "version": "0.1.0",
+  "homepage": "https://github.com/j-/jquery-columnfreeze",
+  "authors": [
+    "Jamie Hoeks <j@skeoh.com>"
+  ],
+  "description": "Freeze table columns in place",
+  "main": "jquery.columnfreeze.js",
+  "moduleType": [
+    "globals"
+  ],
+  "keywords": [
+    "jquery",
+    "plugin",
+    "table",
+    "column",
+    "freeze"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery-tableslice": "~0.1.0",
+    "jquery-tablesplit": "~0.1.0"
+  }
+}
