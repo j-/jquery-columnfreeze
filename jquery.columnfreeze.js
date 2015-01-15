@@ -13,6 +13,7 @@ var CONTROLLER_KEY = 'columnfreeze-controller';
 
 var Controller = function ($table) {
 	this.$table = $table;
+	this.createElements();
 };
 
 /* Controller static functions */
@@ -77,6 +78,32 @@ $Controller.config = function (key, value) {
 	}
 };
 
+$Controller.createElements = function () {
+	this.$containerFixed = this.createContainerFixed();
+	this.$containerScroll = this.createContainerScroll();
+	this.$wrapper = this.createWrapper()
+		.append(this.$containerFixed)
+		.append(this.$containerScroll);
+};
+
+$Controller.createContainerFixed = function () {
+	return $(document.createElement('div'))
+		.addClass(this.config('containerFixedClass'))
+		.css(this.config('containerFixedCSS'));
+};
+
+$Controller.createContainerScroll = function () {
+	return $(document.createElement('div'))
+		.addClass(this.config('containerScrollClass'))
+		.css(this.config('containerScrollCSS'));
+};
+
+$Controller.createWrapper = function () {
+	return $(document.createElement('div'))
+		.addClass(this.config('wrapperClass'))
+		.css(this.config('wrapperCSS'));
+};
+
 $Controller.freeze = function () {
 	this.unfreeze();
 	this.pin();
@@ -87,8 +114,7 @@ $Controller.freeze = function () {
 $Controller.unfreeze = function () {
 	if (this.isFrozen()) {
 		this.$table.insertBefore(this.$wrapper);
-		this.$wrapper.remove();
-		this.$wrapper = null;
+		this.$wrapper.detach();
 		this.frozen = false;
 	}
 };
@@ -108,39 +134,16 @@ $Controller.pin = function () {
 	var headerSelector = this.config('headerSelector');
 	var tableWidth = 0;
 	var $split = this.splitTable(index);
-	this.$containerFixed = this.createContainerFixed();
-	this.$containerScroll = this.createContainerScroll();
-	this.$tableFixed = $split.eq(0).appendTo(this.$containerFixed);
-	this.$tableScroll = $split.eq(1).appendTo(this.$containerScroll);
+	this.$tableFixed = $split.eq(0).appendTo(this.$containerFixed.empty());
+	this.$tableScroll = $split.eq(1).appendTo(this.$containerScroll.empty());
 	if (this.config('scrollWidth') !== 'auto') {
 		tableWidth = this.copyColumnWidths();
 	}
 	this.$tableFixed.width(this.config('fixedWidth'))
 	this.$tableScroll.width(this.config('scrollWidth') || tableWidth + 1);
-	this.$wrapper = this.createWrapper()
-		.append(this.$containerFixed)
-		.append(this.$containerScroll)
-		.insertBefore(this.$table);
+	this.$wrapper.insertBefore(this.$table);
 	this.$table.detach();
 	this.$containerScroll.css('left', this.$containerFixed.width() + 'px');
-};
-
-$Controller.createContainerFixed = function () {
-	return $(document.createElement('div'))
-		.addClass(this.config('containerFixedClass'))
-		.css(this.config('containerFixedCSS'));
-};
-
-$Controller.createContainerScroll = function () {
-	return $(document.createElement('div'))
-		.addClass(this.config('containerScrollClass'))
-		.css(this.config('containerScrollCSS'));
-};
-
-$Controller.createWrapper = function () {
-	return $(document.createElement('div'))
-		.addClass(this.config('wrapperClass'))
-		.css(this.config('wrapperCSS'));
 };
 
 $Controller.splitTable = function () {
