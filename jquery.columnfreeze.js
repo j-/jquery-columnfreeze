@@ -205,6 +205,8 @@ $.fn.columnFreeze = function (action, options) {
 		// get controller if it exists, create otherwise
 		var controller = Controller.ensureElementController(this);
 		switch (action) {
+			case 'controller':
+				return controller;
 			case 'init':
 				controller.config(options);
 				return;
