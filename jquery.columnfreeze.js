@@ -189,6 +189,7 @@ $Controller.isFrozen = function () {
 /* Expose jQuery plugin */
 
 var returnable = {
+	controller: true,
 	isFrozen: true,
 	config: true
 };
