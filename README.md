@@ -51,6 +51,10 @@ $('table').columnFreeze([action], [options]);
   * Set multiple values: `$('table').columnFreeze('config', { index: 3 })`
 * `$('table').columnFreeze('isFrozen');`
   * Returns `true` if the table is currently frozen
+* `$('table').columnFreeze('init', options);`
+  * Initializes a controller without freezing a table
+* `$('table').columnFreeze('controller');`
+  * Returns the internal controller
 
 ### Options
 
