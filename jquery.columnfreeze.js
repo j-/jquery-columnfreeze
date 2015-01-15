@@ -206,6 +206,7 @@ $.fn.columnFreeze = function (action, options) {
 		var controller = Controller.ensureElementController(this);
 		switch (action) {
 			case 'init':
+				controller.config(options);
 				return;
 			case 'freeze':
 				controller.config(options);
