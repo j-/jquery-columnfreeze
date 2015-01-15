@@ -106,8 +106,10 @@ $Controller.createWrapper = function () {
 
 $Controller.freeze = function () {
 	this.unfreeze();
-	this.pin();
-	this.fixRowHeights();
+	this.splitTable();
+	this.copyColumnWidths();
+	this.showClone();
+	this.copyRowHeights();
 	this.frozen = true;
 };
 
@@ -116,28 +118,6 @@ $Controller.unfreeze = function () {
 		this.showOriginal();
 		this.frozen = false;
 	}
-};
-
-/*
-	DOM tree (replaces original table)
-
-	$wrapper
-		$containerFixed
-			$tableFixed
-		$containerScroll
-			$tableScroll
-*/
-
-$Controller.pin = function () {
-	var tableWidth = 0;
-	this.splitTable();
-	if (this.config('scrollWidth') !== 'auto') {
-		tableWidth = this.copyColumnWidths();
-	}
-	this.$tableFixed.width(this.config('fixedWidth'))
-	this.$tableScroll.width(this.config('scrollWidth') || tableWidth + 1);
-	this.showClone();
-	this.$containerScroll.css('left', this.$containerFixed.width() + 'px');
 };
 
 $Controller.splitTable = function () {
@@ -156,28 +136,28 @@ $Controller.splitTable = function () {
 $Controller.copyColumnWidths = function () {
 	var index = this.config('index');
 	var headerSelector = this.config('headerSelector');
-	var $headers = this.$table.find(headerSelector);
-	var controller = this;
-	var totalWidth = 0;
-	$headers.each(function (i) {
-		var $table, $clone;
-		var $original = $(this);
-		var width = $original.outerWidth();
-		if (i < index) {
-			$table = controller.$tableFixed;
-		}
-		else {
-			$table = controller.$tableScroll;
-			i -= index;
-			totalWidth += width;
-		}
-		$clone = $table.find(headerSelector).eq(i);
-		$clone.width(width);
+	var $allHeaders = this.$table.find(headerSelector);
+	var $headersFixed = this.$tableFixed.find(headerSelector);
+	var $headersScroll = this.$tableScroll.find(headerSelector);
+	var widthFixed = 1;
+	var widthScroll = 1;
+	var currentWidth;
+	$allHeaders.slice(0, index).each(function (i) {
+		currentWidth = $(this).outerWidth();
+		widthFixed += currentWidth;
+		$headersFixed.eq(i).width(currentWidth);
 	});
-	return totalWidth;
+	$allHeaders.slice(index).each(function (i) {
+		currentWidth = $(this).outerWidth();
+		widthScroll += currentWidth;
+		$headersScroll.eq(i).width(currentWidth);
+	});
+	this.$tableFixed.width(widthFixed);
+	this.$tableScroll.width(widthScroll);
+	this.$containerScroll.css('left', widthFixed + 'px');
 };
 
-$Controller.fixRowHeights = function () {
+$Controller.copyRowHeights = function () {
 	var rowSelector = this.config('rowSelector');
 	var $fixedRows = this.$tableFixed.find(rowSelector);
 	var $scrollRows = this.$tableScroll.find(rowSelector);
