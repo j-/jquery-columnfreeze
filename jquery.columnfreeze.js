@@ -139,6 +139,8 @@ $Controller.copyColumnWidths = function () {
 	var $allHeaders = this.$table.find(headerSelector);
 	var $headersFixed = this.$tableFixed.find(headerSelector);
 	var $headersScroll = this.$tableScroll.find(headerSelector);
+	var configWidthFixed = this.config('widthFixed');
+	var configWidthScroll = this.config('widthScroll');
 	var widthFixed = 1;
 	var widthScroll = 1;
 	var currentWidth;
@@ -152,9 +154,9 @@ $Controller.copyColumnWidths = function () {
 		widthScroll += currentWidth;
 		$headersScroll.eq(i).width(currentWidth);
 	});
-	this.$tableFixed.width(widthFixed);
-	this.$tableScroll.width(widthScroll);
-	this.$containerScroll.css('left', widthFixed + 'px');
+	this.$tableFixed.width(configWidthFixed || widthFixed);
+	this.$tableScroll.width(configWidthScroll || widthScroll);
+	this.$containerScroll.css('left', configWidthFixed || widthFixed + 'px');
 };
 
 $Controller.copyRowHeights = function () {
