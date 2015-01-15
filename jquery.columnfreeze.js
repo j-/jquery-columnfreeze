@@ -129,7 +129,6 @@ $Controller.unfreeze = function () {
 */
 
 $Controller.pin = function () {
-	var headerSelector = this.config('headerSelector');
 	var tableWidth = 0;
 	this.splitTable();
 	if (this.config('scrollWidth') !== 'auto') {
