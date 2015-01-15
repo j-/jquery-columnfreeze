@@ -130,12 +130,9 @@ $Controller.unfreeze = function () {
 */
 
 $Controller.pin = function () {
-	var index = this.config('index');
 	var headerSelector = this.config('headerSelector');
 	var tableWidth = 0;
-	var $split = this.splitTable(index);
-	this.$tableFixed = $split.eq(0).appendTo(this.$containerFixed.empty());
-	this.$tableScroll = $split.eq(1).appendTo(this.$containerScroll.empty());
+	this.splitTable();
 	if (this.config('scrollWidth') !== 'auto') {
 		tableWidth = this.copyColumnWidths();
 	}
@@ -148,7 +145,15 @@ $Controller.pin = function () {
 
 $Controller.splitTable = function () {
 	var index = this.config('index');
-	return this.$table.tableSplit(index);
+	var $split = this.$table.tableSplit(index);
+	if (this.$tableFixed) {
+		this.$tableFixed.remove();
+	}
+	if (this.$tableScroll) {
+		this.$tableScroll.remove();
+	}
+	this.$tableFixed = $split.eq(0).appendTo(this.$containerFixed);
+	this.$tableScroll = $split.eq(1).appendTo(this.$containerScroll);
 };
 
 $Controller.copyColumnWidths = function () {
