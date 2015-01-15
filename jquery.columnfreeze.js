@@ -113,8 +113,7 @@ $Controller.freeze = function () {
 
 $Controller.unfreeze = function () {
 	if (this.isFrozen()) {
-		this.$table.insertBefore(this.$wrapper);
-		this.$wrapper.detach();
+		this.showOriginal();
 		this.frozen = false;
 	}
 };
@@ -138,8 +137,7 @@ $Controller.pin = function () {
 	}
 	this.$tableFixed.width(this.config('fixedWidth'))
 	this.$tableScroll.width(this.config('scrollWidth') || tableWidth + 1);
-	this.$wrapper.insertBefore(this.$table);
-	this.$table.detach();
+	this.showClone();
 	this.$containerScroll.css('left', this.$containerFixed.width() + 'px');
 };
 
@@ -191,6 +189,16 @@ $Controller.fixRowHeights = function () {
 		$fixedRow.height(max);
 		$scrollRow.height(max);
 	});
+};
+
+$Controller.showOriginal = function () {
+	this.$table.insertBefore(this.$wrapper);
+	this.$wrapper.detach();
+};
+
+$Controller.showClone = function () {
+	this.$wrapper.insertBefore(this.$table);
+	this.$table.detach();
 };
 
 $Controller.isFrozen = function () {
