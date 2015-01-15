@@ -39,6 +39,7 @@ Controller.ensureElementController = function (el) {
 /* Controller methods */
 
 var $Controller = Controller.prototype = {
+	frozen: false,
 	$table: null,
 	$tableFixed: null,
 	$tableScroll: null,
@@ -80,13 +81,15 @@ $Controller.freeze = function () {
 	this.unfreeze();
 	this.pin();
 	this.fixRowHeights();
+	this.frozen = true;
 };
 
 $Controller.unfreeze = function () {
-	if (this.$wrapper) {
+	if (this.isFrozen()) {
 		this.$table.insertBefore(this.$wrapper);
 		this.$wrapper.remove();
 		this.$wrapper = null;
+		this.frozen = false;
 	}
 };
 
@@ -183,7 +186,7 @@ $Controller.fixRowHeights = function () {
 };
 
 $Controller.isFrozen = function () {
-	return this.$wrapper !== null;
+	return this.frozen;
 };
 
 /* Expose jQuery plugin */
